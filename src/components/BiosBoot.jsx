@@ -25,7 +25,10 @@ const BiosBoot = ({ onComplete }) => {
     let index = 0;
     const interval = setInterval(() => {
       if (index < bootSequence.length) {
-        setLines((prev) => [...prev, bootSequence[index]]);
+        const nextLine = bootSequence[index];
+        if (nextLine !== undefined) {
+          setLines((prev) => [...prev, nextLine]);
+        }
         index++;
       } else {
         clearInterval(interval);
@@ -64,22 +67,25 @@ const BiosBoot = ({ onComplete }) => {
   return (
     <div className="bios-screen" onClick={handleScreenClick}>
       <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'left' }}>
-        {lines.map((line, idx) => (
-          <div key={idx} style={{ marginBottom: '8px', color: '#00ff00', fontSmooth: 'never' }}>
-            {line.startsWith("BOOT SUCCESSFUL") ? (
-              <span style={{ color: '#00f0ff', fontWeight: 'bold' }}>{line}</span>
-            ) : line.includes("ACTIVE") || line.includes("OK") || line.includes("CONNECTED") ? (
-              <span>
-                {line.substring(0, line.indexOf("ACTIVE") !== -1 ? line.indexOf("ACTIVE") : line.indexOf("OK") !== -1 ? line.indexOf("OK") : line.indexOf("CONNECTED"))}
-                <span style={{ color: '#ff007f' }}>
-                  {line.includes("ACTIVE") ? "ACTIVE" : line.includes("OK") ? "OK" : "CONNECTED"}
+        {lines.map((line, idx) => {
+          if (!line) return null;
+          return (
+            <div key={idx} style={{ marginBottom: '8px', color: '#00ff00', fontSmooth: 'never' }}>
+              {line.startsWith("BOOT SUCCESSFUL") ? (
+                <span style={{ color: '#00f0ff', fontWeight: 'bold' }}>{line}</span>
+              ) : line.includes("ACTIVE") || line.includes("OK") || line.includes("CONNECTED") ? (
+                <span>
+                  {line.substring(0, line.indexOf("ACTIVE") !== -1 ? line.indexOf("ACTIVE") : line.indexOf("OK") !== -1 ? line.indexOf("OK") : line.indexOf("CONNECTED"))}
+                  <span style={{ color: '#ff007f' }}>
+                    {line.includes("ACTIVE") ? "ACTIVE" : line.includes("OK") ? "OK" : "CONNECTED"}
+                  </span>
                 </span>
-              </span>
-            ) : (
-              line
-            )}
-          </div>
-        ))}
+              ) : (
+                line
+              )}
+            </div>
+          );
+        })}
         {lines.length >= bootSequence.length && (
           <div style={{ marginTop: '20px' }}>
             <span className="bios-cursor"></span>
