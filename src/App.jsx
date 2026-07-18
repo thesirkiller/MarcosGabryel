@@ -136,14 +136,13 @@ function App() {
   }
 
   return (
-    <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden' }}>
-      {/* CRT Display Scanlines and Flicker */}
-      <div className="crt-overlay" />
+    <ErrorBoundary>
+      <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden' }}>
+        {/* CRT Display Scanlines and Flicker */}
+        <div className="crt-overlay" />
 
-      {/* 3D WebGL Vaporwave Canvas Background */}
-      <ErrorBoundary>
+        {/* 3D WebGL Vaporwave Canvas Background */}
         <ThreeCanvas isMobile={isMobile} />
-      </ErrorBoundary>
 
       {/* Retro Desktop Icon Manager and taskbar */}
       <Desktop
@@ -361,7 +360,8 @@ Precisa de um sistema sob medida ou quer tirar uma ideia do papel? Preencha as i
           <div style={{ textAlign: 'center', padding: '20px' }}>Nenhum projeto selecionado.</div>
         )}
       </Window>
-    </div>
+      </div>
+    </ErrorBoundary>
   );
 }
 
